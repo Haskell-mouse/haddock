@@ -486,9 +486,9 @@ renamePseudoFamilyDecl (PseudoFamilyDecl { .. }) =  PseudoFamilyDecl
 renameFamilyInfo :: FamilyInfo GhcRn -> RnM (FamilyInfo DocNameI)
 renameFamilyInfo DataFamily     = return DataFamily
 renameFamilyInfo OpenTypeFamily = return OpenTypeFamily
-renameFamilyInfo (ClosedTypeFamily eqns)
+renameFamilyInfo (ClosedTypeFamily eqns tyfun)
   = do { eqns' <- mapM (mapM (mapM renameTyFamInstEqn)) eqns
-       ; return $ ClosedTypeFamily eqns' }
+       ; return $ ClosedTypeFamily eqns' undefined}
 
 renameDataDefn :: HsDataDefn GhcRn -> RnM (HsDataDefn DocNameI)
 renameDataDefn (HsDataDefn { dd_ND = nd, dd_ctxt = lcontext, dd_cType = cType

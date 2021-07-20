@@ -337,11 +337,11 @@ ppFamDecl associated doc instances decl unicode =
     body = catMaybes [familyEqns, documentationToLaTeX doc]
 
     whereBit = case fdInfo (tcdFam decl) of
-      ClosedTypeFamily _ -> keyword "where"
-      _                  -> empty
+      ClosedTypeFamily _ _ -> keyword "where"
+      _                    -> empty
 
     familyEqns
-      | FamilyDecl { fdInfo = ClosedTypeFamily (Just eqns) } <- tcdFam decl
+      | FamilyDecl { fdInfo = ClosedTypeFamily (Just eqns) _} <- tcdFam decl
       , not (null eqns)
       = Just (text "\\haddockbeginargs" $$
               vcat [ decltt (ppFamDeclEqn eqn) <+> nl | L _ eqn <- eqns ] $$
@@ -374,9 +374,9 @@ ppFamHeader (FamilyDecl { fdLName = L _ name
   famly leader <+> famName <+> famSig <+> injAnn
   where
     leader = case info of
-      OpenTypeFamily     -> keyword "type"
-      ClosedTypeFamily _ -> keyword "type"
-      DataFamily         -> keyword "data"
+      OpenTypeFamily       -> keyword "type"
+      ClosedTypeFamily _ _ -> keyword "type"
+      DataFamily           -> keyword "data"
 
     famly | associated = id
           | otherwise = (<+> keyword "family")

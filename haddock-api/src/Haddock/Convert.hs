@@ -235,14 +235,14 @@ synifyTyCon _prr _coax tc
       OpenSynFamilyTyCon -> mkFamDecl OpenTypeFamily
       ClosedSynFamilyTyCon mb
         | Just (CoAxiom { co_ax_branches = branches }) <- mb
-          -> mkFamDecl $ ClosedTypeFamily $ Just
-            $ map (noLocA . synifyAxBranch tc) (fromBranches branches)
+          -> mkFamDecl $ ClosedTypeFamily (Just
+            $ map (noLocA . synifyAxBranch tc) (fromBranches branches)) $ Nothing
         | otherwise
-          -> mkFamDecl $ ClosedTypeFamily $ Just []
+          -> mkFamDecl $ ClosedTypeFamily (Just []) Nothing
       BuiltInSynFamTyCon {}
-        -> mkFamDecl $ ClosedTypeFamily $ Just []
+        -> mkFamDecl $ ClosedTypeFamily (Just []) Nothing
       AbstractClosedSynFamilyTyCon {}
-        -> mkFamDecl $ ClosedTypeFamily Nothing
+        -> mkFamDecl $ ClosedTypeFamily Nothing Nothing
       DataFamilyTyCon {}
         -> mkFamDecl DataFamily
   where
